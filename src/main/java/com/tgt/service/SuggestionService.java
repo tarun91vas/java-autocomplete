@@ -10,4 +10,6 @@ import java.util.List;
 @Service
 public interface SuggestionService {
     public List<MatchNode> getMatches(String query);
+
+    public void buildTrie();
 }

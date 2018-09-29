@@ -12,7 +12,9 @@ An autocomplete engine in java using suffix trie and inverted index.
 
 
 #### Demo
-`https://text-match.herokuapp.com/search/abcd`
+
+ - Build Trie: `https://text-match.herokuapp.com/buildTrie`
+ - Search: `https://text-match.herokuapp.com/search/abcd`
 
 #### Request
 

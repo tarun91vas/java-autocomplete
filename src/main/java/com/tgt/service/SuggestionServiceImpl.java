@@ -24,7 +24,6 @@ public class SuggestionServiceImpl implements SuggestionService {
     private static RankAndSort rankAndSort = new RankAndSort();
 
     public SuggestionServiceImpl() {
-        suffixTrie = buildSuffixTrie();
     }
 
     private SuffixTrie buildSuffixTrie() {
@@ -33,6 +32,11 @@ public class SuggestionServiceImpl implements SuggestionService {
         List<String> wordList = new ArrayList<>(wordFreqMap.keySet());
         SuffixTrie trie = new SuffixTrie(wordList);
         return trie;
+    }
+
+    @Override
+    public void buildTrie() {
+        suffixTrie = buildSuffixTrie();
     }
 
     @Override

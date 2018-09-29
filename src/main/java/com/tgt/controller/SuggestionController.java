@@ -41,4 +41,22 @@ public class SuggestionController {
         }
         return response;
     }
+
+    @RequestMapping(value = "/buildTrie")
+    public Response getMatches(HttpServletRequest req, HttpServletResponse resp) {
+        Response response = new Response();
+        List<MatchNode> suggestions = new ArrayList<>();
+        try {
+            long start_time = System.nanoTime();
+            suggestionService.buildTrie();
+            long end_time = System.nanoTime();
+            double difference = (end_time - start_time) / 1e6;
+            response.setTime_in_millis(difference);
+            response.setMessage("Success");
+        } catch (Exception e) {
+            log.error("Exception occured while fetching matches", e);
+            response.setMessage("Error fetching results");
+        }
+        return response;
+    }
 }
