@@ -1,5 +1,6 @@
 package com.tgt.controller;
 
+import com.tgt.model.MatchNode;
 import com.tgt.model.Response;
 import com.tgt.model.Suggestion;
 import com.tgt.service.SuggestionService;
@@ -26,9 +27,13 @@ public class SuggestionController {
     public Response getMatches(HttpServletRequest req, HttpServletResponse resp,
                                @PathVariable(value = "word") String word) {
         Response response = new Response();
-        List<Suggestion> suggestions = new ArrayList<>();
+        List<MatchNode> suggestions = new ArrayList<>();
         try {
+            long start_time = System.nanoTime();
             suggestions = suggestionService.getMatches(word);
+            long end_time = System.nanoTime();
+            double difference = (end_time - start_time) / 1e6;
+            response.setTime_in_millis(String.valueOf(difference));
             response.setData(suggestions);
         } catch (Exception e) {
             log.error("Exception occured while fetching matches", e);

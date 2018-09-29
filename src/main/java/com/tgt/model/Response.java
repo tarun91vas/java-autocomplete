@@ -4,10 +4,19 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Response {
+    private String time_in_millis;
     private Object data;
     private String message;
 
     public Response(){
+    }
+
+    public String getTime_in_millis() {
+        return time_in_millis;
+    }
+
+    public void setTime_in_millis(String time_in_millis) {
+        this.time_in_millis = time_in_millis;
     }
 
     public Object getData() {
@@ -26,5 +35,4 @@ public class Response {
     public void setMessage(String message) {
         this.message = message;
     }
-
 }
