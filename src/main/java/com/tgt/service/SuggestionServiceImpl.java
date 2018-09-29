@@ -26,6 +26,7 @@ public class SuggestionServiceImpl implements SuggestionService {
     private static RankAndSort rankAndSort = new RankAndSort();
 
     public SuggestionServiceImpl() {
+        suffixTrie = buildSuffixTrie();
     }
 
     private SuffixTrie buildSuffixTrie() {
@@ -46,7 +47,7 @@ public class SuggestionServiceImpl implements SuggestionService {
                     suffixTrie = buildSuffixTrie();
                     log.info("Build complete!");
                 } catch (Exception e) {
-                    log.error("Error bulding trie", e);
+                    log.error("Error building trie", e);
                 }
             }
         });

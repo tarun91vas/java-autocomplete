@@ -11,11 +11,6 @@ An autocomplete engine in java using suffix trie and inverted index.
 `java -jar ./build/libs/java-autocomplete-0.0.1.jar`
 
 
-#### Demo
-
- - Build Trie: `https://text-match.herokuapp.com/buildTrie`
- - Search: `https://text-match.herokuapp.com/search/abcd`
-
 #### Request
 
 GET /search/{query}
