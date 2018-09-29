@@ -22,7 +22,7 @@ GET /search/{query}
 
 ```
 {
-"time_in_millis": "19.573423",
+  "time_in_millis": "19.573423",
   "data": [
     {
       "value": "abc",
