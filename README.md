@@ -15,6 +15,8 @@ An autocomplete engine in java using suffix trie and inverted index.
 
 GET /search/{query}
 
+Example: http://localhost:8088/search/abc
+
 #### Response
 
 ```
