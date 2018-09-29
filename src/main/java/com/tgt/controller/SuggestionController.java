@@ -33,7 +33,7 @@ public class SuggestionController {
             suggestions = suggestionService.getMatches(word);
             long end_time = System.nanoTime();
             double difference = (end_time - start_time) / 1e6;
-            response.setTime_in_millis(String.valueOf(difference));
+            response.setTime_in_millis(difference);
             response.setData(suggestions);
         } catch (Exception e) {
             log.error("Exception occured while fetching matches", e);
