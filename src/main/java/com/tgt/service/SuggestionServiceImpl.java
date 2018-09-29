@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class SuggestionServiceImpl implements SuggestionService {
@@ -36,7 +38,18 @@ public class SuggestionServiceImpl implements SuggestionService {
 
     @Override
     public void buildTrie() {
-        suffixTrie = buildSuffixTrie();
+        CompletableFuture<Void> future = CompletableFuture.runAsync(new Runnable() {
+            @Override
+            public void run() {
+                // Simulate a long-running Job
+                try {
+                    suffixTrie = buildSuffixTrie();
+                    log.info("Build complete!");
+                } catch (Exception e) {
+                    log.error("Error bulding trie", e);
+                }
+            }
+        });
     }
 
     @Override
