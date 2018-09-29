@@ -1,5 +1,6 @@
 package com.tgt.ds;
 
+import com.tgt.lib.LevenshteinDistance;
 import com.tgt.lib.RankAndSort;
 import com.tgt.model.MatchNode;
 
@@ -15,6 +16,8 @@ public class SuffixTrie {
 
     public HashMap<String,List<MatchNode>> invertedSuffixIndex = new HashMap<>();
 
+    public static LevenshteinDistance levenshteinDistance = new LevenshteinDistance();
+
     public SuffixTrie(List<String> wordList) {
         for (String txt: wordList) {
             // Consider all suffixes of given string and
@@ -29,19 +32,17 @@ public class SuffixTrie {
 
     // Find possible matches
     public List<MatchNode> search_trie(String pat) {
-        HashMap<Integer, List<String>> fuzzyMap =  root.search_fuzzy(pat);
+        List<String> trieNodes =  root.search_fuzzy(pat);
 
         List<MatchNode> matchNodes = new ArrayList<>();
-        for (int fuzzyValue : fuzzyMap.keySet()) {
-            List<String> trieNodes = fuzzyMap.get(fuzzyValue);
-
-            for(String trieNode : trieNodes) {
-                if(invertedSuffixIndex.containsKey(trieNode)) {
-                    List<MatchNode> currMatches = invertedSuffixIndex.get(trieNode);
-                    for (MatchNode currNode : currMatches) {
-                        currNode.setFuzzy(fuzzyValue);
-                        matchNodes.add(currNode);
-                    }
+        for(String trieNode : trieNodes) {
+            if(invertedSuffixIndex.containsKey(trieNode)) {
+                List<MatchNode> currMatches = invertedSuffixIndex.get(trieNode);
+                for (MatchNode currNode : currMatches) {
+                    currNode.setFuzzy(
+                            levenshteinDistance.distance(pat, currNode.getValue())
+                    );
+                    matchNodes.add(currNode);
                 }
             }
         }

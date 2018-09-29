@@ -3,14 +3,13 @@ package com.tgt.lib;
 import com.tgt.model.MatchNode;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class RankAndSort {
 
     final static int MAX_RESULTS = 25;
+
+    final static int MAX_FUZZY = 2;
 
     private DecimalFormat df = new DecimalFormat("#.###");
 
@@ -18,10 +17,11 @@ public class RankAndSort {
         List<MatchNode> fuzzyScoreNodes = updateFuzzyScore(matchNodes);
         List<MatchNode> topRankedNodes = rank(fuzzyScoreNodes);
         Collections.sort(topRankedNodes);
-        if (topRankedNodes.size() > MAX_RESULTS) {
-            return topRankedNodes.subList(0, MAX_RESULTS);
+        List<MatchNode> fuzzyOrderedNodes = sortByFuzzy(topRankedNodes);
+        if (fuzzyOrderedNodes.size() > MAX_RESULTS) {
+            return fuzzyOrderedNodes.subList(0, MAX_RESULTS);
         }
-        return topRankedNodes;
+        return fuzzyOrderedNodes;
     }
 
     public List<MatchNode> rank(List<MatchNode> matchNodes) {
@@ -53,6 +53,17 @@ public class RankAndSort {
             Double scoreWithFuzzy = (double)(node.getScore()/((node.getFuzzy()+1) * (node.getFuzzy()+1)));
             node.setScore(Double.valueOf(df.format(scoreWithFuzzy)));
             nodes.add(node);
+        }
+        return nodes;
+    }
+
+    public List<MatchNode> sortByFuzzy(List<MatchNode> matchNodes) {
+        List<MatchNode> nodes = new ArrayList<>();
+
+        for(int i = 0; i <= MAX_FUZZY; i++) {
+            for (MatchNode node : matchNodes) {
+                if (node.getFuzzy() == i) nodes.add(node);
+            }
         }
         return nodes;
     }

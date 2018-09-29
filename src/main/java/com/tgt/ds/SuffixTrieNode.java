@@ -10,7 +10,7 @@ public class SuffixTrieNode {
 
     final static int MAX_CHAR = 256;
 
-    final static int MAX_FUZZY = 1;
+    final static int MAX_FUZZY = 2;
 
     private String value;
 
@@ -68,43 +68,31 @@ public class SuffixTrieNode {
             return false;
     }
 
-    // A function to return a map of fuzzy matches
-    public HashMap<Integer, List<String>> search_fuzzy(String s) {
+    public List<String> search_fuzzy(String s) {
         List<String> nodesAtKDistance = new ArrayList<>();
-        this.findAllNodesAtKDistance(s.length(), nodesAtKDistance);
-
-        //Map of fuzzy value for matched nodes
-        HashMap<Integer, List<String>> fuzzyMatches = buildFuzzyMap(nodesAtKDistance, s);
-        return fuzzyMatches;
+        this.findAllNodesAtKDistance(s.length(), nodesAtKDistance, s);
+        return nodesAtKDistance;
     }
 
-    public void findAllNodesAtKDistance(Integer depth, List<String> values) {
+    public void findAllNodesAtKDistance(Integer depth, List<String> values, String s) {
+        // Validate fuzzy match
+        String currValue = this.value;
+        String consumedQuery = s.substring(0, (s.length() - depth));
+
+        if (currValue != null && !currValue.isEmpty() &&
+                consumedQuery != null && !consumedQuery.isEmpty()) {
+            int dist = levenshteinDistance.distance(currValue, consumedQuery);
+            if (dist > MAX_FUZZY) return;
+        }
+
         if (depth == 0) {
-            values.add(this.value);return;
+            values.add(this.value);
+            return;
         }
         for(SuffixTrieNode node : children) {
             if (node != null) {
-                node.findAllNodesAtKDistance(depth - 1, values);
+                node.findAllNodesAtKDistance(depth - 1, values, s);
             }
         }
-    }
-
-    public HashMap<Integer, List<String>> buildFuzzyMap(List<String> nodesAtKDistance, String s){
-        HashMap<Integer, List<String>> fuzzyMatches = new HashMap<Integer, List<String>>();
-        for (String nodeValue : nodesAtKDistance) {
-            int fuzzy_dist = levenshteinDistance.distance(s, nodeValue);
-            if (fuzzy_dist <= MAX_FUZZY) {
-                if(fuzzyMatches.containsKey(fuzzy_dist)) {
-                    List<String> matches = fuzzyMatches.get(fuzzy_dist);
-                    matches.add(nodeValue);
-                    fuzzyMatches.put(fuzzy_dist, matches);
-                } else {
-                    List<String> matches = new ArrayList<>();
-                    matches.add(nodeValue);
-                    fuzzyMatches.put(fuzzy_dist, matches);
-                }
-            }
-        }
-        return fuzzyMatches;
     }
 }

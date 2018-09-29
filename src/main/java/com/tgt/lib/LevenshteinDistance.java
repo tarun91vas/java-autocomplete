@@ -27,8 +27,8 @@ public class LevenshteinDistance {
 
     public static void main(String[] args) {
         LevenshteinDistance levenshteinDistance = new LevenshteinDistance();
-        String s1 = "acb";
-        String s2 = "abc";
+        String s1 = "gretness";
+        String s2 = "greatness";
         System.out.println(levenshteinDistance.distance(s1, s2));
     }
 }
