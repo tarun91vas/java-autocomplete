@@ -29,6 +29,8 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-actuator-docs')
 	compile('org.springframework.boot:spring-boot-starter-web')
 
+	compile group: 'com.opencsv', name: 'opencsv', version: '3.7'
+
     testCompile('org.springframework.boot:spring-boot-starter-test')
 
 
